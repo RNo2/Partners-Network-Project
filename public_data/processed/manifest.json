@@ -171,8 +171,9 @@
       "Montgomery County",
       "Philadelphia County"
     ],
-    "validation_status": "validated identifiers and county membership",
-    "limitations": "Directories incomplete; source status is not confirmation of operation. Public benefits entries are separately classified. Cross-source conflicts remain separate."
+    "validation_status": "404 Philadelphia source records reconciled; original categories preserved; no duplicate providers appended",
+    "limitations": "Directories incomplete; source status is not confirmation of operation. Public benefits entries are separately classified. Cross-source conflicts remain separate.",
+    "sha256": "69512cd708dfbf7dc9ad9de0e003bdcded1b503f700f3c1082637014667d5acf"
   },
   {
     "source": "https://www3.septa.org/developer/gtfs_public.zip",
@@ -222,5 +223,104 @@
     ],
     "validation_status": "validated identifiers and county membership",
     "limitations": "One representative actual GTFS shape per route; viewport clipped. Branches omitted from display, full raw feed retained."
+  },
+  {
+    "integration_batch": "supplemental-2026-11",
+    "source": "Supplied public export, reconciled against official source",
+    "asset": "supplied_tracts.csv",
+    "retrieved_at": "2026-11-13T16:47:44.399218+00:00",
+    "sha256": "95a2e3da9c337c935d2fdc351f6de764b30119236d4e10eb0619bb7cc599a00e",
+    "record_count": 384,
+    "validation_status": "See reconciliation audit"
+  },
+  {
+    "integration_batch": "supplemental-2026-11",
+    "source": "Supplied public export, reconciled against official source",
+    "asset": "supplied_meals.csv",
+    "retrieved_at": "2026-11-13T16:47:44.399218+00:00",
+    "sha256": "cfce21c4cb65640e4d2eb6ade228791ddc995b55ceb33096e35fc28b17a61b51",
+    "record_count": 404,
+    "validation_status": "See reconciliation audit"
+  },
+  {
+    "integration_batch": "supplemental-2026-11",
+    "source": "Supplied public export, reconciled against official source",
+    "asset": "supplied_health.csv",
+    "retrieved_at": "2026-11-13T16:47:44.399218+00:00",
+    "sha256": "daf6e6e1b2339f08a6ac5f0b2829cac9560ebdcb6b3fa04719f61b557dc059d5",
+    "record_count": 5005,
+    "validation_status": "See reconciliation audit"
+  },
+  {
+    "integration_batch": "supplemental-2026-11",
+    "source": "https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/health_of_the_city/FeatureServer/0/query",
+    "asset": "health_of_city.parquet",
+    "retrieved_at": "2026-11-13T16:47:44.399218+00:00",
+    "reporting_vintage": "Source reporting periods retained; predominantly 2017\u20132021 context",
+    "record_count": 5005,
+    "geographic_coverage": "Philadelphia only",
+    "validation_status": "reconciled against official public data",
+    "sha256": "1375e15d983a2bfe2bf5b4a2b4120dc27646049cdb2cd2f69775a79a4abf0afe",
+    "limitations": "Philadelphia only, not tract data; sentinel and unsafe observations missing; no pooling across strata."
+  },
+  {
+    "integration_batch": "supplemental-2026-11",
+    "source": "https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/health_of_the_city/FeatureServer/0/query",
+    "asset": "health_metric_catalog.parquet",
+    "retrieved_at": "2026-11-13T16:47:44.399218+00:00",
+    "reporting_vintage": "47 source indicators",
+    "record_count": 47,
+    "geographic_coverage": "Philadelphia only",
+    "validation_status": "reconciled against official public data",
+    "sha256": "55051f4bfad86423fab443af2a73fc581c74c4fbab9e4dd9b041fdaaa1650c45",
+    "limitations": "Catalog of all indicators; no scoring framework."
+  },
+  {
+    "integration_batch": "supplemental-2026-11",
+    "source": "https://www2.census.gov/geo/docs/maps-data/data/rel2020/tract/tab20_tract20_tract10_st42.txt",
+    "asset": "tract_relationships_2010_2020.parquet",
+    "retrieved_at": "2026-11-13T16:47:44.399218+00:00",
+    "reporting_vintage": "2010-to-2020 official tract relationships",
+    "record_count": 508,
+    "geographic_coverage": "Philadelphia only",
+    "validation_status": "reconciled against official public data",
+    "sha256": "bb80fe0ca05f12f593795d3796bd8fc5a4c271a3e872ca4616a79aae00c5573f",
+    "limitations": "Land/water overlap is not a population allocation weight; no estimates converted."
+  },
+  {
+    "integration_batch": "supplemental-2026-11",
+    "source": "Supplied Census_Tracts_2010.csv",
+    "asset": "tracts_2010_reference.parquet",
+    "retrieved_at": "2026-11-13T16:47:44.399218+00:00",
+    "reporting_vintage": "2010",
+    "record_count": 384,
+    "geographic_coverage": "Philadelphia only",
+    "validation_status": "reconciled against official public data",
+    "sha256": "eec641d366ee667736534a7ac54e63ddd13074e8d817a4cd7456797bbc45880b",
+    "limitations": "Attribute reference only. Does not replace current boundaries."
+  },
+  {
+    "integration_batch": "supplemental-2026-11",
+    "source": "https://www2.census.gov/geo/docs/maps-data/data/rel2020/tract/tab20_tract20_tract10_st42.txt",
+    "asset": "tract_vintage_audit.parquet",
+    "retrieved_at": "2026-11-13T16:47:44.399218+00:00",
+    "reporting_vintage": "2010 vs TIGER2024 identifiers",
+    "record_count": 429,
+    "geographic_coverage": "Philadelphia only",
+    "validation_status": "reconciled against official public data",
+    "sha256": "9bdf71d7bd16ea7296ee5c000d32f8d8d3255080b5c4aa5e7f4ffc6892a057a3",
+    "limitations": "Matching IDs alone do not establish unchanged geometry."
+  },
+  {
+    "integration_batch": "supplemental-2026-11",
+    "source": "https://opendataphilly.org/datasets/free-food-and-meal-sites/",
+    "asset": "meal_reconciliation.parquet",
+    "retrieved_at": "2026-11-13T16:47:44.399218+00:00",
+    "reporting_vintage": "Existing snapshot vs supplied export",
+    "record_count": 1106,
+    "geographic_coverage": "Philadelphia only",
+    "validation_status": "reconciled against official public data",
+    "sha256": "0229ebd4e75bb1973233e1a0c693a480b341961e4304a435a139232c904d5072",
+    "limitations": "No new providers; formatting differences are not operational updates."
   }
 ]

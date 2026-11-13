@@ -1,0 +1,30 @@
+{
+  "meal_source_records": 404,
+  "new_providers": 0,
+  "substantive_provider_differences": 0,
+  "format_precision_differences": 1106,
+  "source_category_counts": {
+    "Food Site": 300,
+    "General Meal Site": 51,
+    "Senior Meal Site": 27,
+    "Public Benefits": 26
+  },
+  "tracts_2010": 384,
+  "tracts_current": 408,
+  "shared_tract_ids": 363,
+  "old_only_ids": 21,
+  "current_only_ids": 45,
+  "official_relationship_rows": 508,
+  "health_rows": 5005,
+  "health_metrics": 47,
+  "sentinel_values": {
+    "metric_value": 336,
+    "lower_bound": 4834,
+    "upper_bound": 4834
+  },
+  "geographic_resolutions": {
+    "county": 4353,
+    "planning_district": 360,
+    "zcta": 292
+  }
+}

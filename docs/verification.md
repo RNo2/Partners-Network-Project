@@ -92,3 +92,9 @@ This supersedes the original empty-foundation status for the **public** release.
 - The official Community Cloud page was reachable through the TLS-valid HTTP client. The isolated automated Chromium browser encountered the environment proxy CA trust error when opening the hosting control panel; no TLS verification was disabled. No authenticated Community Cloud hosting session or deployment tool is available to this agent. The account owner must connect the published repository and deploy `public_app.py`.
 
 **Deployment verification remains pending. A successful GitHub push is not a public Streamlit deployment. No public app URL is claimed or guessed.**
+
+## Supplied-export integration checks · November 2026
+
+The full suite passes **35 tests** after this integration, with the same five non-failing dependency deprecation warnings. New checks cover meal semantic/format differences, preservation of provider categories, exclusion of benefits offices from coverage, official tract relationship coverage, unchanged primary geography/indicator counts, sentinel/quality handling, original health reporting periods, and Philadelphia-only UI scope.
+
+Real Chromium exercised unemployment, renter housing burden, population counts and poverty controls, ZCTA comparisons without false tract mapping, non-Philadelphia filter withholding, and the source/audit documentation. No browser page errors were observed. SHA-256 comparisons confirmed that `geographic_units.parquet`, `community_indicators.parquet`, and `operating_schedules.parquet` remain byte-identical to the previous release. Supplemental reconciliation was rerun without increasing provider or observation counts. The build validates staged output before replacing release assets.

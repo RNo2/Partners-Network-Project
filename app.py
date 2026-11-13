@@ -98,8 +98,9 @@ if page=='Executive Overview':
     st.subheader('How should limited resources improve food access?')
     st.write('Compare strengthening existing partners, expanding geographic coverage, and improving network coordination. Community need, partner assessment, and operational feasibility remain separate evidence streams.')
     if all_partners.empty: st.warning('No organizational or public records have been loaded. No strategic conclusions or rankings are available.')
+    metric_partners=partners[partners.partner_type.ne('public benefits')]
     cols=st.columns(4)
-    for col,label,value in zip(cols,['Share providers','External providers','Unknown affiliation','Active providers'],[sum(partners.network_membership=='share'),sum(partners.network_membership=='external'),sum(partners.network_membership=='unknown'),sum(partners.active_status=='active')]): col.metric(label,int(value))
+    for col,label,value in zip(cols,['Share providers','External providers','Unknown affiliation','Active providers'],[sum(metric_partners.network_membership=='share'),sum(metric_partners.network_membership=='external'),sum(metric_partners.network_membership=='unknown'),sum(metric_partners.active_status=='active')]): col.metric(label,int(value))
     if not partners.empty:
         st.warning(f'{partners.latitude.isna().sum()} selected providers lack coordinates; {partners.last_verified.isna().sum()} lack a verification date. Directories may be incomplete. Nearby providers do not establish available capacity.')
         st.plotly_chart(landscape_map(partners),width='stretch')
@@ -129,7 +130,7 @@ elif page=='Food Access Landscape':
     if RELEASE:
         with st.expander('Possible shared-address records · retained for review'):
             st.dataframe(store.read('duplicate_candidates'),hide_index=True,width='stretch')
-    st.caption('Coordinates are supplied, not geocoded automatically. Sources and last-verified dates remain visible. A public directory is not a complete census of services.')
+    st.caption('Benefits-assistance locations are not food providers and are excluded from access and operating-hours calculations, even when shown on the map. Coordinates are supplied or source-documented Census geocodes. Sources and last-verified dates remain visible. A public directory is not a complete census of services.')
 
 elif page=='Community Need':
     units=geographies()
@@ -159,10 +160,15 @@ elif page=='Community Need':
                 mapped=pd.DataFrame({'geographic_id':retail.CensusTract20,'geographic_resolution':'tract','display_value':retail[metric],'unit':metric})
                 st.plotly_chart(landscape_map(partners.iloc[:0],units,mapped),width='stretch')
 
+    if RELEASE:
+        from partner_network.health_ui import health_context
+        health_context(store,filters['county'],'need_health')
+
 elif page=='Geographic and Temporal Accessibility':
     radius=st.number_input('Exploratory straight-line radius (km)',min_value=0.1,value=1.0,step=0.1)
     st.caption('User-selected screening radius, not an approved access standard. No walking or transit times are inferred.')
     active=partners[partners.active_status.ne('inactive') if PUBLIC else partners.active_status.eq('active')]
+    active=active[active.partner_type.ne('public benefits')]
     units=geographies()
     if not units.empty:
         table(coverage(units,active,radius,include_unknown=PUBLIC),'coverage.csv')
@@ -268,6 +274,11 @@ elif page=='Strategic Opportunity Explorer':
         if not units.empty: constraints=constraints[constraints.geographic_id.isin(units.geographic_id)|constraints.partner_id.isin(partners.partner_id)]
         table(constraints,'operational_constraints.csv')
     st.info('Immediate, short-term, or expansion classifications await approved criteria. Missing capacity information prevents feasibility conclusions.')
+
+    if RELEASE:
+        from partner_network.health_ui import health_context
+        with st.expander('Philadelphia historical context · separate evidence'):
+            health_context(store,filters['county'],'opportunity_health',compact=True)
 
 elif page=='Resource Allocation Scenarios':
     st.write('Deep, wide, or network optimization: compare explicit proposals against one additional-food budget for one reporting interval. These are staff-entered scenarios, not predictions or optimized recommendations.')
@@ -380,6 +391,11 @@ elif page=='Methodology and Data Sources':
         st.dataframe(pd.read_json('public_data/processed/manifest.json'),hide_index=True,width='stretch')
         lookup=st.selectbox('USDA variable definitions',sorted(p.name for p in Path('public_data/processed').glob('*Lookup*.csv')))
         if lookup: st.dataframe(pd.read_csv(Path('public_data/processed')/lookup,encoding='latin1'),hide_index=True,width='stretch')
+    if RELEASE and Path('docs/supplied_data_review.md').exists():
+        st.markdown(Path('docs/supplied_data_review.md').read_text())
+        with st.expander('2010 / current tract ID audit and official relationship reference'):
+            st.dataframe(store.read('tract_vintage_audit'),hide_index=True,width='stretch')
+            st.dataframe(store.read('tract_relationships_2010_2020'),hide_index=True,width='stretch')
     st.markdown(Path('docs/methodology.md').read_text())
     st.markdown(Path('docs/public_data_status.md').read_text())
     st.caption('Source-level privacy labels are enforced in public-data view. Public deployment additionally requires a physically separate reviewed database and authentication/hosting review. This application is not publicly deployed.')

@@ -8,6 +8,7 @@ import pandas as pd
 import geopandas as gpd
 from bs4 import BeautifulSoup
 from partner_network.schema import SCHEMAS
+from partner_network.supplemental import provider_kind
 ROOT=Path(__file__).resolve().parents[1]
 RAW=ROOT/'public_data/raw'; OUT=ROOT/'public_data/processed'; RAW.mkdir(parents=True,exist_ok=True);OUT.mkdir(parents=True,exist_ok=True)
 COUNTIES={'42045':'Delaware County','42091':'Montgomery County','42101':'Philadelphia County'}
@@ -64,11 +65,11 @@ partners=[]; schedules=[]
 from shapely.geometry import Point
 for feature in f['features']:
  p=feature['properties'];pid='PHL:'+str(p['objectid']);location=feature.get('geometry');xy=location['coordinates'] if location else [None,None]
- category=p.get('category') or '';status=p.get('status');kind='public benefits' if p['category_type']=='Public Benefits' else 'community fridge' if 'Refrigerator' in category else 'free meal program' if 'Meal' in p['category_type'] else 'food pantry / distribution'
+ category=p.get('category') or '';status=p.get('status');kind=provider_kind(p['category_type'],category)
  # A non-Share directory label does not establish independent affiliation.
  membership='share' if 'SHARE FOOD PROGRAM' in category else 'unknown'
  row=base('partners',partner_id=pid,site_name=p['site_name'],street_address=p.get('address'),city='Philadelphia',state='PA',zip_code=p.get('zip_code'),county='Philadelphia County',latitude=xy[1],longitude=xy[0],partner_type=kind,active_status='active' if status=='Active' else 'inactive' if status=='Permanently Closed' else 'unknown',network_membership=membership,provider_affiliations=category,source=PHILLY,last_verified=None)
- row.update(retrieved_at=TODAY,source_status=status,seasonally_closed=p.get('seasonally_closed'),temporary_closure=p.get('temporary_closure'),geocoding_method='source coordinates',geocoding_confidence='source supplied; not independently surveyed',source_record_id=str(p['objectid']),published_schedule=json.dumps({k:v for k,v in p.items() if k.startswith('hours_') and v}),website=p.get('website'))
+ row.update(source_category=category,source_category_type=p['category_type'],retrieved_at=TODAY,source_status=status,seasonally_closed=p.get('seasonally_closed'),temporary_closure=p.get('temporary_closure'),geocoding_method='source coordinates',geocoding_confidence='source supplied; not independently surveyed',source_record_id=str(p['objectid']),published_schedule=json.dumps({k:v for k,v in p.items() if k.startswith('hours_') and v}),website=p.get('website'))
  if xy[0] is not None:
   match=geo[geo.geometry.covers(Point(*xy))]
   row['census_tract']=match.GEOID.iloc[0] if len(match)==1 else None
@@ -154,5 +155,8 @@ for mode in ['bus','rail']:
 save('gtfs_stops',pd.concat(stopframes,ignore_index=True),'downloaded '+TODAY,GTFS,'Regional stop points, not computed journeys or pantry access.')
 save('gtfs_routes',pd.concat(routeframes,ignore_index=True),'downloaded '+TODAY,GTFS,'Actual routes serving regional stops; service calendars stored separately.')
 if shapeframes:save('gtfs_shapes',pd.concat(shapeframes,ignore_index=True),'downloaded '+TODAY,GTFS,'One representative actual GTFS shape per route; viewport clipped. Branches omitted from display, full raw feed retained.')
+# Retain the separately reviewed Philadelphia-only supplement provenance on base refresh.
+if (OUT/'manifest.json').exists():
+ manifest.extend(x for x in json.loads((OUT/'manifest.json').read_text()) if x.get('integration_batch')=='supplemental-2026-11')
 (OUT/'manifest.json').write_text(json.dumps(manifest,indent=2))
 print('Built',len(providers),'providers,',len(geo),'tracts,',len(indicators),'ACS observations')

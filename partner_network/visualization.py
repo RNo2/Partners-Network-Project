@@ -37,7 +37,7 @@ def landscape_map(partners, units=None, indicators=None):
         sites=partners[partners.network_membership==group].dropna(subset=['latitude','longitude'])
         if not sites.empty:
             x,y=transform.transform(sites.longitude.to_numpy(float),sites.latitude.to_numpy(float))
-            fig.add_trace(go.Scatter(x=x,y=y,text=sites.site_name,customdata=sites[['active_status','source','last_verified']].fillna('unknown'),mode='markers',marker=dict(size=9,color=color,line=dict(width=1,color='white')),name=group.title(),hovertemplate='%{text}<br>Status: %{customdata[0]}<br>Source: %{customdata[1]}<br>Verified: %{customdata[2]}<extra></extra>'))
+            fig.add_trace(go.Scatter(x=x,y=y,text=sites.site_name,customdata=sites.reindex(columns=['active_status','source','last_verified','source_category_type','provider_affiliations']).fillna('not supplied'),mode='markers',marker=dict(size=9,color=color,line=dict(width=1,color='white')),name=group.title(),hovertemplate='%{text}<br>Status: %{customdata[0]}<br>Source type: %{customdata[3]}<br>Affiliations: %{customdata[4]}<br>Source: %{customdata[1]}<br>Verified: %{customdata[2]}<extra></extra>'))
     fig.update_layout(height=520,margin=dict(l=0,r=0,t=10,b=0),legend=dict(orientation='h'),paper_bgcolor='#f6f7f9',plot_bgcolor='#eef1f4',xaxis=dict(visible=False),yaxis=dict(visible=False,scaleanchor='x',scaleratio=1),dragmode='pan')
     return fig
 

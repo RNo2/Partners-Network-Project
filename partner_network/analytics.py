@@ -20,7 +20,7 @@ def haversine(lat1, lon1, lat2, lon2):
 
 def nearby_pairs(partners, radius_km):
     if radius_km <= 0: raise ValueError('Radius must exceed zero')
-    sites = partners.dropna(subset=['latitude','longitude']).reset_index(drop=True)
+    sites = partners[partners.partner_type.ne('public benefits')].dropna(subset=['latitude','longitude']).reset_index(drop=True)
     rows=[]
     # Pairwise computation bounded in memory; actual network routes require supplied measurements.
     for i, a in sites.iterrows():
@@ -37,6 +37,7 @@ def coverage(units, partners, radius_km, include_unknown=False):
     from shapely.geometry import shape, Point
     rows=[]
     active = partners[partners.active_status.ne('inactive') if include_unknown else partners.active_status.eq('active')].dropna(subset=['latitude','longitude'])
+    active=active[active.partner_type.ne('public benefits')]
     from shapely.strtree import STRtree
     points=[Point(float(r.longitude),float(r.latitude)) for _,r in active.iterrows()]
     tree=STRtree(points)

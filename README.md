@@ -95,3 +95,15 @@ To introduce a new dataset, add a schema contract, validation rules and a migrat
 Share's partner IDs, addresses/coordinates, affiliation/status, verified schedules, exact-period activity and approved disclosure policy. Public providers need source, permission to reuse and last verification. Need estimates require geographic IDs, unit, denominator where available, year, methodology and compatible boundaries. Assessments require finalized criteria and approval governance; scenario feasibility requires food/warehouse/transport/staff/relationship constraints.
 
 Next milestone: reconcile one verified public provider export with the Share inventory, load a compatible boundary/ACS release, and validate the area and schedule comparisons with staff. Authenticated governance, source adapters, routing, capacity optimization, hub scenarios and approved scoring UI are not complete.
+
+## Supplementary public exports
+
+See [supplied-data reconciliation](docs/supplied_data_review.md). The new Health of the City panel is separate Philadelphia-only context in Community Need and Opportunity Explorer. It preserves source years, subgroup definitions, uncertainty, quality flags and missing values. Current three-county ACS/geography are unchanged.
+
+To reproduce the supplemental reconciliation after a base refresh, supply the three original CSV paths:
+
+```bash
+.venv/bin/python scripts/integrate_supplied_data.py --tracts /path/Census_Tracts_2010.csv --meals '/path/free_meal_sites (3).csv' --health /path/health_of_the_city.csv
+```
+
+The script caches originals in ignored `public_data/raw/`; subsequent runs can omit the arguments. It downloads the paginated official health source and Census tract relationship table for verification. It refuses unmatched or substantively different meal records rather than silently appending/overwriting them. New source versions require review; provider names alone are never merge keys. Run the complete test suite and review the supplemental audit before publishing changed assets.
