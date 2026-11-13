@@ -1,0 +1,49 @@
+{
+  "url": "https://partners-network-tool-z7hbeemtmhnnrvhuvoxpya.streamlit.app/",
+  "anonymous_access": true,
+  "pages": [
+    {
+      "page": "Executive Overview",
+      "status": "verified in preceding live navigation pass"
+    },
+    {
+      "page": "Community Need",
+      "status": "verified in preceding live navigation pass"
+    },
+    {
+      "page": "Food Access Landscape",
+      "status": "verified in preceding live navigation pass"
+    },
+    {
+      "page": "Geographic and Temporal Accessibility",
+      "status": "verified in preceding live navigation pass"
+    },
+    {
+      "page": "Share Network Analysis",
+      "status": "verified in preceding live navigation pass"
+    },
+    {
+      "page": "Partner Assessment",
+      "status": "verified in preceding live navigation pass"
+    },
+    {
+      "page": "Strategic Opportunity Explorer",
+      "status": "verified in preceding live navigation pass"
+    },
+    {
+      "page": "Resource Allocation Scenarios",
+      "status": "verified in preceding live navigation pass"
+    },
+    {
+      "page": "Data Management",
+      "status": "verified in preceding live navigation pass"
+    },
+    {
+      "page": "Methodology and Data Sources",
+      "status": "verified in preceding live navigation pass"
+    }
+  ],
+  "three_county_filters": true,
+  "public_read_only": true,
+  "browser_errors": []
+}

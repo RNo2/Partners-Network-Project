@@ -1,3 +1,7 @@
+Public deployment: https://partners-network-tool-z7hbeemtmhnnrvhuvoxpya.streamlit.app/
+
+Verified anonymously on November 13, 2026. Both default entrypoints now use public assets. See verification.md for the live checks.
+
 # Streamlit Community Cloud deployment
 
 Target repository: https://github.com/RNo2/Partners-Network-Project

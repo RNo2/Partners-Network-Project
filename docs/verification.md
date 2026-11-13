@@ -1,3 +1,17 @@
+## Live deployment verified · November 13, 2026
+
+Public application: https://partners-network-tool-z7hbeemtmhnnrvhuvoxpya.streamlit.app/
+
+Verified in a fresh anonymous Chromium session, with TLS validation enabled. All ten sections loaded without application exceptions. Actual-data need maps, provider maps and SEPTA layers rendered. All three county filters updated the displayed Share-affiliated source-record counts (Delaware 16, Montgomery 0, Philadelphia 58). A zero affiliation count reflects absence of explicit Share attribution in these public sources, not proof that Share has no services there.
+
+The first live check found that hosting had selected `app.py`, which initially opened the internal empty-data workspace. Commit `22ea497` corrected this: both `app.py` and `public_app.py` now default to the populated public, read-only asset backend. Internal SQLite workflows require the separate explicit `internal_app.py` entrypoint. A new regression test enforces the safe default. The full suite passes **30 tests** (five non-failing dependency deprecation warnings), also verified from the release checkout.
+
+No public administrative upload controls were present. Public data and methodology were accessible without accounts. Actual hosted screenshots and the verification summary are in `docs/screenshots/live/` and `docs/live_verification.json`. Remaining analytical limitations are unchanged: source-published hours are not independently verified, some coordinates remain withheld, and travel-time routing and internal organizational assessments are not inferred.
+
+The historical verification records below describe earlier milestones; their deployment-pending statements are superseded by this live verification.
+
+---
+
 # Verification record
 
 Executed November 13, 2026 in Python 3.12 on Linux, with Streamlit 1.67.0. Exact project dependency versions are in `requirements.lock`.

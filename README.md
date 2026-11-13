@@ -1,5 +1,8 @@
 # Regional Food Access · Partner Network Intelligence V1.0
 
+**[Open the public application](https://partners-network-tool-z7hbeemtmhnnrvhuvoxpya.streamlit.app/)** · anonymous access and live workflows verified November 13, 2026.
+
+
 Public, read-only Streamlit application for Philadelphia, Montgomery and Delaware counties, Pennsylvania. This is an independent exploratory prototype, not an official Share Food Program assessment. No Share logo or implied endorsement.
 
 ## Public release
@@ -64,7 +67,7 @@ Weekly schedule calculations require verified, effective, weekly records and mer
 
 Use Data Management → Download consistent SQLite backup. It uses SQLite's backup API and includes raw uploads, scenarios and current tables. Store backups securely. To restore, stop Streamlit, retain an existing backup of the current database, copy the reviewed backup to the configured path, and restart. Do not copy a live WAL database file alone.
 
-`SHARE_PUBLIC_MODE=1 .venv/bin/streamlit run internal_app.py` uses a separate `data/public.sqlite` by default (override only with `SHARE_PUBLIC_DB`) and previews public-labeled records and disables internal pages/exports. It does **not** authorize public deployment: use a separate reviewed public-only database and an authentication/hosting review before any publication. Raw internal imports and backups must never be published. The initial `.gitignore` excludes data, uploads, work files and environments. No commit, push or deployment has been performed.
+Use `public_app.py` for the read-only public release. It reads only reviewed public Parquet assets, never internal databases or their raw imports. The internal workspace requires `internal_app.py`; do not deploy that entrypoint.
 
 ## Tests
 
