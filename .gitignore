@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+.pytest_cache/
+data/
+*.sqlite*
+attachments/
+work/
+*.xlsx
+*.gpkg
+.env
+public_data/raw/

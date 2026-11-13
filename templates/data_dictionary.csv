@@ -1,0 +1,108 @@
+dataset,field,required,format,allowed_values,definition
+partners,partner_id,True,text,,Source-provided partner id
+partners,site_name,True,text,,Source-provided site name
+partners,street_address,False,text,,Source-provided street address
+partners,city,False,text,,Source-provided city
+partners,state,False,text,,Source-provided state
+partners,zip_code,False,text,,Source-provided zip code
+partners,county,False,text,,Source-provided county
+partners,neighborhood,False,text,,Source-provided neighborhood
+partners,census_tract,False,text,,Source-provided census tract
+partners,latitude,False,number,,Source-provided latitude
+partners,longitude,False,number,,Source-provided longitude
+partners,partner_type,False,text,,"Configurable free text: pantry, community fridge, free meal program, etc."
+partners,active_status,True,text,active; inactive; unknown,Source-provided active status
+partners,network_membership,True,text,share; external; unknown,"Explicit affiliation: share, external, unknown. Never inferred from a name."
+partners,provider_affiliations,False,text,,Semicolon-separated source-reported affiliations.
+partners,source,True,text,,Traceable dataset title/URL or internal owner. Not automatically verified by import.
+partners,last_verified,False,YYYY-MM-DD,,ISO date of actual verification; blank means unknown.
+partners,visibility,True,text,internal; public,internal or public. Public requires permission to disclose; assessments and operational/distribution records are internal only.
+distribution_records,record_id,True,text,,Source-provided record id
+distribution_records,partner_id,True,text,,Source-provided partner id
+distribution_records,reporting_period_start,True,YYYY-MM-DD,,Inclusive ISO date. Exact interval retained; incompatible periods are never summed together.
+distribution_records,reporting_period_end,True,YYYY-MM-DD,,Source-provided reporting period end
+distribution_records,pounds_sent,False,number,,Source-provided pounds sent
+distribution_records,pounds_received,False,number,,Source-provided pounds received
+distribution_records,pounds_distributed,False,number,,Source-provided pounds distributed
+distribution_records,households_served,False,number,,Source-provided households served
+distribution_records,individuals_served,False,number,,Source-provided individuals served
+distribution_records,distribution_events,False,number,,Source-provided distribution events
+distribution_records,distribution_frequency,False,text,,"Source wording, e.g. weekly or first Monday. Non-weekly schedules are not treated as weekly."
+distribution_records,source,True,text,,Traceable dataset title/URL or internal owner. Not automatically verified by import.
+distribution_records,visibility,True,text,internal; public,internal or public. Public requires permission to disclose; assessments and operational/distribution records are internal only.
+operating_schedules,schedule_id,True,text,,Source-provided schedule id
+operating_schedules,partner_id,True,text,,Source-provided partner id
+operating_schedules,operating_day,True,text,Monday; Tuesday; Wednesday; Thursday; Friday; Saturday; Sunday,Source-provided operating day
+operating_schedules,opening_time,True,text,,Source-provided opening time
+operating_schedules,closing_time,True,text,,Source-provided closing time
+operating_schedules,distribution_frequency,True,text,,"Source wording, e.g. weekly or first Monday. Non-weekly schedules are not treated as weekly."
+operating_schedules,effective_start_date,False,YYYY-MM-DD,,Source-provided effective start date
+operating_schedules,effective_end_date,False,YYYY-MM-DD,,Source-provided effective end date
+operating_schedules,verification_status,True,text,verified; unverified; unknown,Source-provided verification status
+operating_schedules,last_verified,False,YYYY-MM-DD,,ISO date of actual verification; blank means unknown.
+operating_schedules,source,True,text,,Traceable dataset title/URL or internal owner. Not automatically verified by import.
+operating_schedules,visibility,True,text,internal; public,internal or public. Public requires permission to disclose; assessments and operational/distribution records are internal only.
+community_indicators,indicator_id,True,text,,Source-provided indicator id
+community_indicators,indicator_name,True,text,,Source-provided indicator name
+community_indicators,geographic_id,True,text,,Source-provided geographic id
+community_indicators,geographic_resolution,True,text,county; zip; neighborhood; tract,Source-provided geographic resolution
+community_indicators,value,True,number,,"Measured value, never a missing-value substitute. Rate units: percent, fraction, count."
+community_indicators,unit,True,text,,Source-provided unit
+community_indicators,numerator,False,number,,Source-provided numerator
+community_indicators,denominator,False,number,,Source-provided denominator
+community_indicators,source,True,text,,Traceable dataset title/URL or internal owner. Not automatically verified by import.
+community_indicators,reporting_year,True,number,,Source-provided reporting year
+community_indicators,vintage,True,text,,Source-provided vintage
+community_indicators,methodology,True,text,,Source-provided methodology
+community_indicators,visibility,True,text,internal; public,internal or public. Public requires permission to disclose; assessments and operational/distribution records are internal only.
+geographic_units,unit_id,True,text,,Source-provided unit id
+geographic_units,geographic_id,True,text,,Source-provided geographic id
+geographic_units,geographic_resolution,True,text,county; zip; neighborhood; tract,Source-provided geographic resolution
+geographic_units,name,True,text,,Source-provided name
+geographic_units,county,False,text,,Source-provided county
+geographic_units,geometry_json,True,text,,GeoJSON Polygon/MultiPolygon geometry in EPSG:4326; no invented crosswalks.
+geographic_units,source,True,text,,Traceable dataset title/URL or internal owner. Not automatically verified by import.
+geographic_units,vintage,True,text,,Source-provided vintage
+geographic_units,visibility,True,text,internal; public,internal or public. Public requires permission to disclose; assessments and operational/distribution records are internal only.
+accessibility_measurements,measurement_id,True,text,,Source-provided measurement id
+accessibility_measurements,origin_geographic_id,True,text,,Source-provided origin geographic id
+accessibility_measurements,destination_partner_id,True,text,,Source-provided destination partner id
+accessibility_measurements,travel_mode,True,text,walking; transit; driving; straight_line,Source-provided travel mode
+accessibility_measurements,measurement_type,True,text,network; straight_line,Source-provided measurement type
+accessibility_measurements,travel_minutes,False,number,,Source-provided travel minutes
+accessibility_measurements,distance_km,False,number,,Source-provided distance km
+accessibility_measurements,time_of_day,False,text,,Source-provided time of day
+accessibility_measurements,operating_day,False,text,Monday; Tuesday; Wednesday; Thursday; Friday; Saturday; Sunday,Source-provided operating day
+accessibility_measurements,reporting_date,True,YYYY-MM-DD,,Source-provided reporting date
+accessibility_measurements,source,True,text,,Traceable dataset title/URL or internal owner. Not automatically verified by import.
+accessibility_measurements,visibility,True,text,internal; public,internal or public. Public requires permission to disclose; assessments and operational/distribution records are internal only.
+operational_constraints,constraint_id,True,text,,Source-provided constraint id
+operational_constraints,geographic_id,False,text,,Source-provided geographic id
+operational_constraints,partner_id,False,text,,Source-provided partner id
+operational_constraints,dimension,True,text,,Source-provided dimension
+operational_constraints,quantity,False,number,,Source-provided quantity
+operational_constraints,unit,False,text,,Source-provided unit
+operational_constraints,qualitative_notes,False,text,,Source-provided qualitative notes
+operational_constraints,reporting_date,True,YYYY-MM-DD,,Source-provided reporting date
+operational_constraints,source,True,text,,Traceable dataset title/URL or internal owner. Not automatically verified by import.
+operational_constraints,visibility,True,text,internal; public,internal or public. Public requires permission to disclose; assessments and operational/distribution records are internal only.
+assessment_criteria,criterion_id,True,text,,Source-provided criterion id
+assessment_criteria,label,True,text,,Source-provided label
+assessment_criteria,definition,True,text,,Source-provided definition
+assessment_criteria,rating_guidance,False,text,,Source-provided rating guidance
+assessment_criteria,framework_version,True,text,,Source-provided framework version
+assessment_criteria,approval_status,True,text,draft; approved; retired,Source-provided approval status
+assessment_criteria,source,True,text,,Traceable dataset title/URL or internal owner. Not automatically verified by import.
+assessment_criteria,visibility,True,text,internal; public,internal or public. Public requires permission to disclose; assessments and operational/distribution records are internal only.
+partner_assessments,assessment_id,True,text,,Source-provided assessment id
+partner_assessments,partner_id,True,text,,Source-provided partner id
+partner_assessments,criterion_id,False,text,,Source-provided criterion id
+partner_assessments,framework_version,True,text,,Source-provided framework version
+partner_assessments,rating,False,text,,Source-provided qualitative rating under a matching approved criterion; no generated score.
+partner_assessments,qualitative_notes,False,text,,Source-provided qualitative notes
+partner_assessments,additional_services,False,text,,Source-provided additional services
+partner_assessments,community_reach,False,text,,Source-provided community reach
+partner_assessments,assessment_date,True,YYYY-MM-DD,,Source-provided assessment date
+partner_assessments,review_status,True,text,draft; in_review; final,Source-provided review status
+partner_assessments,source,True,text,,Traceable dataset title/URL or internal owner. Not automatically verified by import.
+partner_assessments,visibility,True,text,internal; public,internal or public. Public requires permission to disclose; assessments and operational/distribution records are internal only.

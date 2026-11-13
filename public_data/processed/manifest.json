@@ -1,0 +1,226 @@
+[
+  {
+    "source": "https://www2.census.gov/geo/tiger/TIGER2024/TRACT/tl_2024_42_tract.zip",
+    "asset": "tracts.zip",
+    "retrieved_at": "2026-11-13T16:02:53.116130+00:00",
+    "sha256": "934e5ee0973b2f57359bf43c810b547aacaaee17069bcbbe5b6b610006dcc71b",
+    "bytes": 13057777
+  },
+  {
+    "asset": "geographic_units.parquet",
+    "source": "https://www2.census.gov/geo/tiger/TIGER2024/TRACT/tl_2024_42_tract.zip",
+    "retrieved_at": "2026-11-13T16:06:02.137415+00:00",
+    "reporting_vintage": "2024",
+    "record_count": 782,
+    "geographic_coverage": [
+      "Delaware County",
+      "Montgomery County",
+      "Philadelphia County"
+    ],
+    "validation_status": "validated identifiers and county membership",
+    "limitations": "County outlines derived by union of official tracts; simplified for display."
+  },
+  {
+    "source": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B01003,B17001,B22010,B08201,B19013,B11001&geo_ids=140|05000US42045,140|05000US42091,140|05000US42101",
+    "asset": "acs2024.json",
+    "retrieved_at": "2026-11-13T16:02:54.123873+00:00",
+    "sha256": "b0c8deb33d1a175ae4a34d29360a505db68234ecef99b463a85f1df4006973f5",
+    "bytes": 3143346
+  },
+  {
+    "source": "https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/free_meal_sites/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson&outSR=4326",
+    "asset": "philadelphia.geojson",
+    "retrieved_at": "2026-11-13T16:02:54.238222+00:00",
+    "sha256": "03ba278c28dbfde0b7aca83632ae91756da08d2e690dbd2ab140ce9612424d04",
+    "bytes": 570575
+  },
+  {
+    "asset": "operating_schedules.parquet",
+    "source": "https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/free_meal_sites/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson&outSR=4326",
+    "retrieved_at": "2026-11-13T16:06:02.137415+00:00",
+    "reporting_vintage": "retrieved 2026-11-13T16:06:02.137415+00:00",
+    "record_count": 585,
+    "geographic_coverage": [
+      "Delaware County",
+      "Montgomery County",
+      "Philadelphia County"
+    ],
+    "validation_status": "validated identifiers and county membership",
+    "limitations": "Published recurring windows; exceptions retained. Not independently verified; seasonal closures may apply."
+  },
+  {
+    "source": "https://www.ers.usda.gov/media/29395/2025-snap-authorized-retailer-access-map-sram-data.zip?v=21278",
+    "asset": "usda_sram2025.zip",
+    "retrieved_at": "2026-11-13T16:02:54.420488+00:00",
+    "sha256": "8e8ccda55aa478dd5907050249c28157d445568d242db8b5f85231b82c8afdbf",
+    "bytes": 18935773
+  },
+  {
+    "asset": "usda_driving.parquet",
+    "source": "https://www.ers.usda.gov/media/29395/2025-snap-authorized-retailer-access-map-sram-data.zip?v=21278",
+    "retrieved_at": "2026-11-13T16:06:02.137415+00:00",
+    "reporting_vintage": "2025 SRAM; July 2026 release",
+    "record_count": 779,
+    "geographic_coverage": [
+      "Delaware County",
+      "Montgomery County",
+      "Philadelphia County"
+    ],
+    "validation_status": "validated identifiers and county membership",
+    "limitations": "Retailer access, not pantry access. Underlying demographic vintages differ; 2020 census tract geography."
+  },
+  {
+    "asset": "usda_general.parquet",
+    "source": "https://www.ers.usda.gov/media/29395/2025-snap-authorized-retailer-access-map-sram-data.zip?v=21278",
+    "retrieved_at": "2026-11-13T16:06:02.137415+00:00",
+    "reporting_vintage": "2025 SRAM; July 2026 release",
+    "record_count": 779,
+    "geographic_coverage": [
+      "Delaware County",
+      "Montgomery County",
+      "Philadelphia County"
+    ],
+    "validation_status": "validated identifiers and county membership",
+    "limitations": "Retailer access, not pantry access. Underlying demographic vintages differ; 2020 census tract geography."
+  },
+  {
+    "asset": "usda_straight.parquet",
+    "source": "https://www.ers.usda.gov/media/29395/2025-snap-authorized-retailer-access-map-sram-data.zip?v=21278",
+    "retrieved_at": "2026-11-13T16:06:02.137415+00:00",
+    "reporting_vintage": "2025 SRAM; July 2026 release",
+    "record_count": 779,
+    "geographic_coverage": [
+      "Delaware County",
+      "Montgomery County",
+      "Philadelphia County"
+    ],
+    "validation_status": "validated identifiers and county membership",
+    "limitations": "Retailer access, not pantry access. Underlying demographic vintages differ; 2020 census tract geography."
+  },
+  {
+    "source": "https://map.feedingamerica.org/county/2024/overall/pennsylvania/county/delaware",
+    "asset": "feeding_42045.html",
+    "retrieved_at": "2026-11-13T16:04:03.594176+00:00",
+    "sha256": "c9cae6fccbda9c6cbb5e4bb3573f9f2fa1d748244f4764caf51c6dbb4a2b96a8",
+    "bytes": 622808
+  },
+  {
+    "source": "https://map.feedingamerica.org/county/2024/overall/pennsylvania/county/montgomery",
+    "asset": "feeding_42091.html",
+    "retrieved_at": "2026-11-13T16:04:05.234855+00:00",
+    "sha256": "94069588593c3bd85dc8c14fe4a980e88e9daee956724ad80b76f51304e5a327",
+    "bytes": 622862
+  },
+  {
+    "source": "https://map.feedingamerica.org/county/2024/overall/pennsylvania/county/philadelphia",
+    "asset": "feeding_42101.html",
+    "retrieved_at": "2026-11-13T16:04:07.061439+00:00",
+    "sha256": "d4f930cd72075860b7198bcef56167c40156967e2e545e773fdfe4e2c74d4f5d",
+    "bytes": 622919
+  },
+  {
+    "asset": "community_indicators.parquet",
+    "source": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B01003,B17001,B22010,B08201,B19013,B11001&geo_ids=140|05000US42045,140|05000US42091,140|05000US42101",
+    "retrieved_at": "2026-11-13T16:06:02.137415+00:00",
+    "reporting_vintage": "ACS 2024 5-year (2020\u20132024)",
+    "record_count": 7796,
+    "geographic_coverage": [
+      "Delaware County",
+      "Montgomery County",
+      "Philadelphia County"
+    ],
+    "validation_status": "validated identifiers and county membership",
+    "limitations": "90% ACS margins of error retained. Derived rate MOE is not calculated. Census Reporter is an alternate distributor, not Census Bureau."
+  },
+  {
+    "source": "https://www.google.com/maps/d/kml?mid=1c-au-fpFUjaSwylPB9xcY89UQnN7iWNU&forcekml=1",
+    "asset": "mahn.kml",
+    "retrieved_at": "2026-11-13T16:03:54.866357+00:00",
+    "sha256": "592792679f4af71b31058da28942cd292ab82aec9889e95396096b32f7cf5001",
+    "bytes": 54916
+  },
+  {
+    "source": "https://img1.wsimg.com/blobby/go/fef8f23f-9f4c-47ac-b508-d026080ed29b/DelCo%20Pantry%20Sites%20March%202026.pdf",
+    "asset": "delco_march2026.pdf",
+    "retrieved_at": "2026-11-13T16:06:06.149066+00:00",
+    "sha256": "2e132f5887d295d917038e9631b305bfe3e3c7c0ac41d88dbf5a519a00f97276",
+    "bytes": 249201
+  },
+  {
+    "asset": "duplicate_candidates.parquet",
+    "source": "source addresses",
+    "retrieved_at": "2026-11-13T16:06:02.137415+00:00",
+    "reporting_vintage": "current snapshot",
+    "record_count": 58,
+    "geographic_coverage": [
+      "Delaware County",
+      "Montgomery County",
+      "Philadelphia County"
+    ],
+    "validation_status": "validated identifiers and county membership",
+    "limitations": "Exact normalized address/ZIP matches only; retained separately, not automatically merged."
+  },
+  {
+    "asset": "partners.parquet",
+    "source": "https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/free_meal_sites/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson&outSR=4326",
+    "retrieved_at": "2026-11-13T16:06:02.137415+00:00",
+    "reporting_vintage": "source-specific dates retained",
+    "record_count": 471,
+    "geographic_coverage": [
+      "Delaware County",
+      "Montgomery County",
+      "Philadelphia County"
+    ],
+    "validation_status": "validated identifiers and county membership",
+    "limitations": "Directories incomplete; source status is not confirmation of operation. Public benefits entries are separately classified. Cross-source conflicts remain separate."
+  },
+  {
+    "source": "https://www3.septa.org/developer/gtfs_public.zip",
+    "asset": "septa_gtfs.zip",
+    "retrieved_at": "2026-11-13T16:04:07.159124+00:00",
+    "sha256": "acff1b8757dd33fd195bd0e2fed75076d4e5be1bda5441c64aa85a259ab22813",
+    "bytes": 26745416
+  },
+  {
+    "asset": "gtfs_stops.parquet",
+    "source": "https://www3.septa.org/developer/gtfs_public.zip",
+    "retrieved_at": "2026-11-13T16:06:02.137415+00:00",
+    "reporting_vintage": "downloaded 2026-11-13T16:06:02.137415+00:00",
+    "record_count": 12280,
+    "geographic_coverage": [
+      "Delaware County",
+      "Montgomery County",
+      "Philadelphia County"
+    ],
+    "validation_status": "validated identifiers and county membership",
+    "limitations": "Regional stop points, not computed journeys or pantry access."
+  },
+  {
+    "asset": "gtfs_routes.parquet",
+    "source": "https://www3.septa.org/developer/gtfs_public.zip",
+    "retrieved_at": "2026-11-13T16:06:02.137415+00:00",
+    "reporting_vintage": "downloaded 2026-11-13T16:06:02.137415+00:00",
+    "record_count": 172,
+    "geographic_coverage": [
+      "Delaware County",
+      "Montgomery County",
+      "Philadelphia County"
+    ],
+    "validation_status": "validated identifiers and county membership",
+    "limitations": "Actual routes serving regional stops; service calendars stored separately."
+  },
+  {
+    "asset": "gtfs_shapes.parquet",
+    "source": "https://www3.septa.org/developer/gtfs_public.zip",
+    "retrieved_at": "2026-11-13T16:06:02.137415+00:00",
+    "reporting_vintage": "downloaded 2026-11-13T16:06:02.137415+00:00",
+    "record_count": 92818,
+    "geographic_coverage": [
+      "Delaware County",
+      "Montgomery County",
+      "Philadelphia County"
+    ],
+    "validation_status": "validated identifiers and county membership",
+    "limitations": "One representative actual GTFS shape per route; viewport clipped. Branches omitted from display, full raw feed retained."
+  }
+]
