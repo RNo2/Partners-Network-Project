@@ -10,7 +10,7 @@ python -m venv .venv
 .venv/bin/streamlit run public_app.py
 ```
 
-Use **public_app.py** as the Streamlit Community Cloud entrypoint. It forces the read-only public asset backend. `app.py` retains the separate internal SQLite import/assessment/scenario workflows. No visitor downloads, uploads, login, API keys or paid subscriptions are required by this application.
+Use **public_app.py** as the Streamlit Community Cloud entrypoint. It forces the read-only public asset backend. `internal_app.py` exposes the separate internal SQLite import/assessment/scenario workflows. No visitor downloads, uploads, login, API keys or paid subscriptions are required by this application.
 
 Real versioned public assets include 779 TIGER census tracts, 7,790 ACS 2024 five-year observations with source MOEs, six official Feeding America county observations, 471 directory source records (445 food-resource records plus 26 separately classified benefits-assistance offices), regional USDA 2025 SRAM measures, and SEPTA bus/rail GTFS infrastructure and schedules. Source records are not deduplicated unique active organizations. Coordinates with failed geocodes or county conflicts are withheld, not invented.
 
@@ -38,7 +38,7 @@ Python 3.11+ recommended. From the project root:
 ```bash
 python -m venv .venv
 .venv/bin/pip install -r requirements.txt
-.venv/bin/streamlit run app.py
+.venv/bin/streamlit run internal_app.py
 ```
 
 Open http://127.0.0.1:8501. The default database is `data/network.sqlite`; set `SHARE_DB` to a controlled local path to select another database. Core analysis requires no internet after dependency installation. Keep loopback binding for this unauthenticated local release.
@@ -64,7 +64,7 @@ Weekly schedule calculations require verified, effective, weekly records and mer
 
 Use Data Management → Download consistent SQLite backup. It uses SQLite's backup API and includes raw uploads, scenarios and current tables. Store backups securely. To restore, stop Streamlit, retain an existing backup of the current database, copy the reviewed backup to the configured path, and restart. Do not copy a live WAL database file alone.
 
-`SHARE_PUBLIC_MODE=1 .venv/bin/streamlit run app.py` uses a separate `data/public.sqlite` by default (override only with `SHARE_PUBLIC_DB`) and previews public-labeled records and disables internal pages/exports. It does **not** authorize public deployment: use a separate reviewed public-only database and an authentication/hosting review before any publication. Raw internal imports and backups must never be published. The initial `.gitignore` excludes data, uploads, work files and environments. No commit, push or deployment has been performed.
+`SHARE_PUBLIC_MODE=1 .venv/bin/streamlit run internal_app.py` uses a separate `data/public.sqlite` by default (override only with `SHARE_PUBLIC_DB`) and previews public-labeled records and disables internal pages/exports. It does **not** authorize public deployment: use a separate reviewed public-only database and an authentication/hosting review before any publication. Raw internal imports and backups must never be published. The initial `.gitignore` excludes data, uploads, work files and environments. No commit, push or deployment has been performed.
 
 ## Tests
 

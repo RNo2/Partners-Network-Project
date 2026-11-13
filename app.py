@@ -15,8 +15,10 @@ from partner_network.visualization import landscape_map, weekly_chart
 
 st.set_page_config(page_title='Regional Food Access | Partner Network Intelligence',layout='wide')
 st.markdown('''<style>.stApp{background:#f6f7f9}h1,h2,h3{color:#172b43}section[data-testid="stSidebar"]{background:#e8edf1}.stMetric{border-top:2px solid #20806a;padding-top:12px}div[data-testid="stCaptionContainer"]{color:#425466}</style>''',unsafe_allow_html=True)
-PUBLIC = os.environ.get('SHARE_PUBLIC_MODE','0') == '1'
-RELEASE = os.environ.get('SHARE_RELEASE_ASSETS','0') == '1'
+# Public is the safe default even if hosting selects app.py directly.
+INTERNAL = os.environ.get('SHARE_INTERNAL_MODE','0') == '1'
+PUBLIC = not INTERNAL or os.environ.get('SHARE_PUBLIC_MODE','0') == '1'
+RELEASE = PUBLIC and (not INTERNAL or os.environ.get('SHARE_RELEASE_ASSETS','0') == '1')
 if RELEASE:
     from partner_network.public_store import PublicStore
     store=PublicStore()

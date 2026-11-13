@@ -10,7 +10,7 @@ Entry point: **public_app.py**, branch **main**, Python **3.12**.
 4. Deploy, set app sharing to public, then open the resulting `*.streamlit.app` URL in a private/incognito browser to confirm no login is required.
 5. Check Overview, all county filters, Community Need, provider map, schedules and SEPTA layers. Do not call the deployment verified until the actual generated URL has been opened.
 
-The public entrypoint forces public mode and uses `PublicStore`, which reads only processed Parquet assets. It does not initialize SQLite or expose a mutation API. The internal app remains `app.py` and is not the Cloud entrypoint. Do not upload internal databases, raw uploads, unpublished assessments, secrets, or test/browser databases to GitHub.
+The public entrypoint forces public mode and uses `PublicStore`, which reads only processed Parquet assets. It does not initialize SQLite or expose a mutation API. The internal entrypoint is `internal_app.py` and must never be selected for public hosting. Both `app.py` and `public_app.py` default to read-only public assets, protecting against an accidental default entrypoint selection. Do not upload internal databases, raw uploads, unpublished assessments, secrets, or test/browser databases to GitHub.
 
 The ~22 MB processed release is prebuilt; visits do not trigger downloads or ETL. Read caches use asset revision. Geometry is simplified for display; full raw source is retained locally during refresh. GTFS stop-times are stored but are not loaded for ordinary map browsing. Initial geographic analysis can take several seconds; repeat views are cached.
 

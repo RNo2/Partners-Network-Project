@@ -7,6 +7,7 @@ from conftest import frame
 PAGES=['Executive Overview','Community Need','Food Access Landscape','Geographic and Temporal Accessibility','Share Network Analysis','Partner Assessment','Strategic Opportunity Explorer','Resource Allocation Scenarios','Data Management','Methodology and Data Sources']
 
 def test_all_empty_pages(tmp_path,monkeypatch):
+    monkeypatch.setenv('SHARE_INTERNAL_MODE','1')
     monkeypatch.setenv('SHARE_DB',str(tmp_path/'app.sqlite'))
     app=AppTest.from_file(str(Path(__file__).resolve().parents[1]/'app.py'),default_timeout=30).run()
     for page in PAGES:
@@ -15,6 +16,7 @@ def test_all_empty_pages(tmp_path,monkeypatch):
 
 
 def test_loaded_navigation_and_filters(populated,provider,monkeypatch):
+    monkeypatch.setenv('SHARE_INTERNAL_MODE','1')
     monkeypatch.setenv('SHARE_DB',str(populated.path))
     # Synthetic schedules and exact-period records, never actual Share data.
     sched=frame('operating_schedules',schedule_id='S1',partner_id='TEST-001',operating_day='Monday',opening_time='09:00',closing_time='12:00',distribution_frequency='weekly',verification_status='verified',source='Synthetic',last_verified='2026-01-01',visibility='internal')
@@ -36,6 +38,7 @@ def test_loaded_navigation_and_filters(populated,provider,monkeypatch):
 
 
 def test_public_mode_hides_internal(populated,monkeypatch):
+    monkeypatch.setenv('SHARE_INTERNAL_MODE','1')
     monkeypatch.setenv('SHARE_DB',str(populated.path));monkeypatch.setenv('SHARE_PUBLIC_MODE','1');monkeypatch.setenv('SHARE_PUBLIC_DB',str(populated.path))
     app=AppTest.from_file(str(Path(__file__).resolve().parents[1]/'app.py'),default_timeout=30).run()
     assert app.metric[0].value=='0'
@@ -44,3 +47,14 @@ def test_public_mode_hides_internal(populated,monkeypatch):
         assert not app.exception
         assert not app.get('file_uploader')
         assert not app.get('download_button')
+
+def test_default_entrypoint_is_public(monkeypatch):
+    for key in ['SHARE_INTERNAL_MODE','SHARE_PUBLIC_MODE','SHARE_RELEASE_ASSETS']:
+        monkeypatch.delenv(key,raising=False)
+    app=AppTest.from_file(str(Path(__file__).resolve().parents[1]/'app.py'),default_timeout=60).run()
+    assert not app.exception
+    assert app.metric[0].value=='74'
+    app.sidebar.radio[0].set_value('Data Management').run()
+    assert not app.exception
+    assert not app.get('file_uploader')
+    assert not any('backup' in str(x.label).lower() for x in app.get('download_button'))
