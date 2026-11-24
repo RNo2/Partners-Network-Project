@@ -12,7 +12,14 @@ Entry point: **public_app.py**, branch **main**, Python **3.12**.
 2. Authorize Streamlit's GitHub integration if prompted. Create app → select this repository, main, public_app.py.
 3. In Advanced settings select Python 3.12. No secrets, APIs, paid services, or credit card are needed for this app.
 4. Deploy, set app sharing to public, then open the resulting `*.streamlit.app` URL in a private/incognito browser to confirm no login is required.
-5. Check Overview, all county filters, Community Need, provider map, schedules and SEPTA layers. Do not call the deployment verified until the actual generated URL has been opened.
+5. In an anonymous browser, check Find food with a known ZIP and a ZIP with no
+   results. Open a directions link and confirm it uses the listing address.
+   Check County snapshot for all three counties, then open Research tools and
+   check Community Need, provider maps, schedules, and SEPTA layers. Repeat
+   the food finder at phone width and confirm the running revision in the host.
+
+Community Cloud and local development install the same pinned dependency set
+through `requirements.txt` and `requirements.lock`.
 
 The public entrypoint forces public mode and uses `PublicStore`, which reads only processed Parquet assets. It does not initialize SQLite or expose a mutation API. The internal entrypoint is `internal_app.py` and must never be selected for public hosting. Both `app.py` and `public_app.py` default to read-only public assets, protecting against an accidental default entrypoint selection. Do not upload internal databases, raw uploads, unpublished assessments, secrets, or test/browser databases to GitHub.
 

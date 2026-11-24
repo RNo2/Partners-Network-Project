@@ -60,6 +60,7 @@ def test_health_sentinels_and_separate_periods():
 def test_health_widgets_and_county_scope(monkeypatch):
     monkeypatch.delenv('SHARE_INTERNAL_MODE',raising=False)
     app=AppTest.from_file(str(Path(__file__).resolve().parents[1]/'public_app.py'),default_timeout=90).run()
+    app.radio(key='public_section').set_value('Research tools').run()
     app.sidebar.radio[0].set_value('Community Need').run()
     assert not app.exception
     assert app.selectbox(key='need_health_metric').value=='percent_below_poverty'

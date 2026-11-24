@@ -1,12 +1,2 @@
-streamlit>=1.50,<2
-pandas>=2.2,<3
-numpy>=1.26,<3
-geopandas>=1.0,<2
-shapely>=2,<3
-pyproj>=3.6,<4
-plotly>=5.24,<7
-openpyxl>=3.1,<4
-pytest>=8,<10
-requests>=2.32,<3
-beautifulsoup4>=4.12,<5
-pyarrow>=18,<25
+# Keep Streamlit Community Cloud and local development on the tested dependency set.
+-r requirements.lock

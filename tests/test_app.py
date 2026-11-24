@@ -53,8 +53,32 @@ def test_default_entrypoint_is_public(monkeypatch):
         monkeypatch.delenv(key,raising=False)
     app=AppTest.from_file(str(Path(__file__).resolve().parents[1]/'app.py'),default_timeout=60).run()
     assert not app.exception
-    assert app.metric[0].value=='74'
-    app.sidebar.radio[0].set_value('Data Management').run()
-    assert not app.exception
+    assert app.radio(key='public_section').value == 'Find food'
+    assert any('official Share Food Program assessments' in item.value for item in app.info)
+    assert any('438 matching' in item.value for item in app.caption)
     assert not app.get('file_uploader')
-    assert not any('backup' in str(x.label).lower() for x in app.get('download_button'))
+    app.text_input[0].set_value('19104').run()
+    assert not app.exception
+    assert 0 < len(app.get('link_button')) < 25
+    assert any('19104' in item.value for item in app.text)
+    app.radio(key='public_section').set_value('County snapshot').run()
+    app.selectbox[0].set_value('Delaware County').run()
+    assert [metric.value for metric in app.metric] == ['10.6%', '61,500', '16']
+    assert any('official Share Food Program assessments' in item.value for item in app.info)
+    app.radio(key='public_section').set_value('Research tools').run()
+    assert app.metric[0].value=='74'
+    assert any('official Share Food Program assessments' in item.value for item in app.info)
+    assert 'Data Management' not in app.sidebar.radio[0].options
+    assert not app.get('file_uploader')
+
+
+def test_public_research_does_not_expand_unsupported_geography(monkeypatch):
+    monkeypatch.delenv('SHARE_INTERNAL_MODE', raising=False)
+    app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / 'app.py'), default_timeout=60).run()
+    app.radio(key='public_section').set_value('Research tools').run()
+    app.sidebar.radio[0].set_value('Community Need').run()
+    app.sidebar.multiselect(key='filter_zip_code').set_value(['19104']).run()
+    assert not app.exception
+    assert not app.metric
+    assert any('unavailable for these geographic filters' in item.value for item in app.info)
+    assert not any(len(item.value) == 779 for item in app.dataframe)

@@ -26,16 +26,27 @@ if RELEASE:
     nearby_pairs=st.cache_data(show_spinner=False)(nearby_pairs)
 else:
     store=Store(os.environ.get('SHARE_PUBLIC_DB','data/public.sqlite') if PUBLIC else os.environ.get('SHARE_DB','data/network.sqlite'))
+if RELEASE:
+    from partner_network.public_ui import county_snapshot, find_food, public_navigation
+
+    section = public_navigation()
+    if section == 'Find food':
+        find_food(store)
+        st.stop()
+    if section == 'County snapshot':
+        county_snapshot(store)
+        st.stop()
+
 PAGES=['Executive Overview','Community Need','Food Access Landscape','Geographic and Temporal Accessibility','Share Network Analysis','Partner Assessment','Strategic Opportunity Explorer','Resource Allocation Scenarios','Data Management','Methodology and Data Sources']
-st.sidebar.title('FOOD ACCESS')
-st.sidebar.caption('PARTNER NETWORK INTELLIGENCE')
-st.sidebar.info('Regional public observatory · V1.0' if PUBLIC else 'Internal workspace · local storage')
-page=st.sidebar.radio('Workspace',PAGES)
+st.sidebar.title('Research tools' if RELEASE else 'Partner Network Intelligence')
+if not RELEASE: st.sidebar.caption('Local workspace')
+page_options = [p for p in PAGES if p not in ('Partner Assessment', 'Data Management')] if RELEASE else PAGES
+page=st.sidebar.radio('Research section' if RELEASE else 'Workspace',page_options)
 all_partners=store.read('partners',PUBLIC)
 if RELEASE and not st.sidebar.checkbox('Include benefits-assistance offices',value=False):
     all_partners=all_partners[all_partners.partner_type.ne('public benefits')]
 filters={}
-with st.sidebar.expander('Provider filters',expanded=True):
+with st.sidebar.expander('Provider filters', expanded=not RELEASE):
     for field,label in [('county','County'),('zip_code','ZIP code'),('neighborhood','Neighborhood'),('census_tract','Census tract'),('partner_type','Provider type'),('active_status','Status'),('network_membership','Network'),('source','Provider source')]:
         options=sorted(all_partners[field].dropna().unique().tolist())
         # Keep selections in session state across pages.
@@ -80,7 +91,7 @@ def table(frame,filename='analysis.csv'):
 
 def choose_indicator(units=None):
     frame=data('community_indicators')
-    if units is not None and not units.empty:
+    if units is not None and (not units.empty or any(filters[field] for field in ('county', 'zip_code', 'census_tract', 'neighborhood'))):
         frame=frame.merge(units[['geographic_id','geographic_resolution']],on=['geographic_id','geographic_resolution'])
     if frame.empty: return frame
     for field,label in [('indicator_name','Indicator'),('geographic_resolution','Geographic resolution'),('reporting_year','Reporting year'),('unit','Unit: count and rate are separate measures'),('source','Source'),('vintage','Indicator vintage')]:
@@ -91,7 +102,7 @@ def choose_indicator(units=None):
 
 st.title(page)
 st.caption('Philadelphia · Montgomery · Delaware counties, Pennsylvania')
-if PUBLIC:
+if PUBLIC and not RELEASE:
     st.info('This platform is an exploratory prototype based on publicly available data. Public directories may be incomplete or outdated. Findings should not be interpreted as official Share Food Program assessments.')
 if any(filters.values()): st.caption('All provider-linked results use the sidebar selection. Community indicators use explicitly selected geographic boundaries, not provider counts.')
 if page=='Executive Overview':
@@ -100,7 +111,7 @@ if page=='Executive Overview':
     if all_partners.empty: st.warning('No organizational or public records have been loaded. No strategic conclusions or rankings are available.')
     metric_partners=partners[partners.partner_type.ne('public benefits')]
     cols=st.columns(4)
-    for col,label,value in zip(cols,['Share providers','External providers','Unknown affiliation','Active providers'],[sum(metric_partners.network_membership=='share'),sum(metric_partners.network_membership=='external'),sum(metric_partners.network_membership=='unknown'),sum(metric_partners.active_status=='active')]): col.metric(label,int(value))
+    for col,label,value in zip(cols,(['Share-labeled listings', 'Explicitly external', 'Unknown affiliation', 'Source-listed active'] if RELEASE else ['Share providers','External providers','Unknown affiliation','Active providers']),[sum(metric_partners.network_membership=='share'),sum(metric_partners.network_membership=='external'),sum(metric_partners.network_membership=='unknown'),sum(metric_partners.active_status=='active')]): col.metric(label,int(value))
     if not partners.empty:
         st.warning(f'{partners.latitude.isna().sum()} selected providers lack coordinates; {partners.last_verified.isna().sum()} lack a verification date. Directories may be incomplete. Nearby providers do not establish available capacity.')
         st.plotly_chart(landscape_map(partners),width='stretch')
@@ -113,6 +124,7 @@ if page=='Executive Overview':
         st.subheader('County food insecurity · 2024 estimates')
         facts=store.read('community_indicators')
         facts=facts[(facts.geographic_resolution=='county') & (facts.indicator_name=='Food insecurity rate')]
+        if filters['county']: facts=facts[facts.county.isin(filters['county'])]
         table(facts[['county','value','unit','reporting_year','source','source_url']],'county_food_insecurity.csv')
         st.caption('Feeding America Map the Meal Gap, 2026 release. County estimates are not disaggregated into tracts. Benefits offices are excluded from the food-provider view by default.')
     if not PUBLIC:
@@ -135,7 +147,7 @@ elif page=='Food Access Landscape':
 elif page=='Community Need':
     units=geographies()
     indicators=choose_indicator(units)
-    if indicators.empty: st.info('Upload community indicators with actual geographic identifiers, units, year, source, vintage, and methodology. Upload matching boundaries for mapping.')
+    if indicators.empty: st.info('Published indicators are unavailable for these geographic filters.' if RELEASE else 'Upload community indicators and matching boundaries for this selection.')
     else:
         table(indicators,'community_need.csv')
         try:
@@ -151,7 +163,7 @@ elif page=='Community Need':
             st.write('2025 SNAP-authorized Retailer Access Map, July 2026 release. These are retailer-access indicators on 2020 tract geography; they do not measure pantry access. Demographic inputs have their own vintages.')
             dataset=st.selectbox('Retailer-access dataset',['usda_general','usda_straight','usda_driving'])
             retail=store.read(dataset)
-            if not units.empty: retail=retail[retail.CensusTract20.isin(units.geographic_id)]
+            retail=retail[retail.CensusTract20.isin(units.geographic_id)]
             table(retail,'retailer_access.csv')
             if not retail.empty and not units.empty:
                 fields=[c for c in retail.select_dtypes('number').columns if c!='CensusTract20']
@@ -184,7 +196,7 @@ elif page=='Geographic and Temporal Accessibility':
         stops=store.read('gtfs_stops')
         shapes=store.read('gtfs_shapes')
         if not routes.empty:
-            selected_routes=st.multiselect('SEPTA routes (empty selection shows all)',sorted(routes.route_id.unique()))
+            selected_routes=st.multiselect('SEPTA route lines (stops shown separately)',sorted(routes.route_id.unique()))
             if selected_routes: shapes=shapes[shapes.route_id.isin(selected_routes)]
             show_stops=st.checkbox('Show stop points',value=True)
             st.plotly_chart(transit_map(active,units,stops if show_stops else stops.iloc[:0],shapes),width='stretch')
@@ -204,11 +216,20 @@ elif page=='Geographic and Temporal Accessibility':
         with st.expander('Published schedule text · includes unparsed and irregular hours'):
             st.dataframe(active[['site_name','county','published_schedule','source']],hide_index=True,width='stretch')
     st.subheader('Weekly operating windows')
-    as_of=st.date_input('Schedule effective on',date.today())
     schedules=data('operating_schedules')
     schedules=schedules[schedules.partner_id.isin(active.partner_id)]
-    verified=eligible_schedules(schedules,as_of,verified_only=not PUBLIC)
-    st.caption(f'{len(schedules)} supplied windows; {len(verified)} source-published and effective on selected date (not independently verified). Only frequency exactly “weekly” contributes to the heatmap and overlap calculations. Other frequencies remain in the source table.')
+    if RELEASE:
+        seasonally_closed = active.get('seasonally_closed', pd.Series('', index=active.index))
+        seasonal_ids = active.loc[seasonally_closed.fillna('').str.lower().eq('yes'), 'partner_id']
+        verified = schedules[~schedules.partner_id.isin(seasonal_ids)]
+        st.caption('Structured listings are from Philadelphia. Their effective dates are unknown. '
+                   'Sites flagged as seasonally closed are excluded from the comparison. '
+                   'Only weekly windows contribute to the heatmap and overlap.')
+    else:
+        as_of = st.date_input('Schedule effective on', date.today())
+        verified = eligible_schedules(schedules, as_of, verified_only=True)
+        st.caption(f'{len(verified)} verified windows match the date. Only weekly windows contribute '
+                   'to the heatmap and overlap.')
     hours=weekly_hours(verified)
     if not hours.empty: st.plotly_chart(weekly_chart(hours,active),width='stretch')
     else: st.info('No usable source-published weekly schedules available. Missing schedules are unknown availability.')
@@ -216,7 +237,7 @@ elif page=='Geographic and Temporal Accessibility':
     day_windows=verified if day=='All' else verified[verified.operating_day==day]
     table(day_windows.merge(active[['partner_id','site_name','network_membership']],on='partner_id'),'operating_windows.csv')
     st.plotly_chart(landscape_map(active[active.partner_id.isin(day_windows.partner_id)]),width='stretch')
-    with st.expander('All supplied windows, including unverified or expired'):
+    with st.expander('All source windows' if RELEASE else 'All supplied windows, including unverified or expired'):
         st.dataframe(schedules[schedules.partner_id.isin(active.partner_id)],hide_index=True,width='stretch')
     st.subheader('Nearby published weekly schedule overlap')
     table(schedule_overlap(pairs,verified),'schedule_overlap.csv')
@@ -290,10 +311,22 @@ elif page=='Resource Allocation Scenarios':
         indicators=choose_indicator(units)
         if not units.empty:
             radius=st.slider('Exploratory proximity radius (km)',0.25,5.0,1.0,0.25)
-            evidence=coverage(units,partners,radius,include_unknown=True)
+            strategy_sites = partners[partners.network_membership.eq('share')] if strategy == 'GO DEEP' else partners
+            if strategy == 'NETWORK OPTIMIZATION':
+                candidates = strategy_sites[strategy_sites.active_status.ne('inactive') &
+                                            strategy_sites.partner_type.ne('public benefits')]
+                candidates = providers_near_units(candidates, units, radius)
+                pairs = nearby_pairs(candidates, radius)
+                schedules = data('operating_schedules')
+                seasonal = candidates.seasonally_closed.fillna('').str.lower().eq('yes')
+                schedules = schedules[schedules.partner_id.isin(candidates.loc[~seasonal, 'partner_id'])]
+                st.subheader('Nearby listings with overlapping published weekly hours')
+                table(schedule_overlap(pairs, schedules), 'strategy_schedule_overlap.csv')
+                st.caption('Structured hours are available only for Philadelphia and have unknown effective dates.')
+            evidence=coverage(units,strategy_sites,radius,include_unknown=True)
             if not indicators.empty: evidence=evidence.merge(indicators[['geographic_id','display_value','unit','source']],on='geographic_id',how='left')
             table(evidence,'strategy_evidence.csv')
-            st.plotly_chart(landscape_map(partners[partners.network_membership=='share'] if strategy=='GO DEEP' else partners,units,indicators),width='stretch')
+            st.plotly_chart(landscape_map(strategy_sites,units,indicators),width='stretch')
         st.caption('Interactive evidence comparison only: no invented pounds, financial returns, capacity or optimization results. User controls change the view; no proposals are saved publicly.')
     else:
         strategy=st.selectbox('Strategy',['Go deep','Go wide','Network optimization'])
@@ -388,7 +421,10 @@ elif page=='Data Management':
 
 elif page=='Methodology and Data Sources':
     if RELEASE:
-        st.dataframe(pd.read_json('public_data/processed/manifest.json'),hide_index=True,width='stretch')
+        manifest = pd.read_json('public_data/processed/manifest.json')
+        manifest['geographic_coverage'] = manifest.geographic_coverage.map(
+            lambda value: ', '.join(value) if isinstance(value, list) else value)
+        st.dataframe(manifest, hide_index=True, width='stretch')
         lookup=st.selectbox('USDA variable definitions',sorted(p.name for p in Path('public_data/processed').glob('*Lookup*.csv')))
         if lookup: st.dataframe(pd.read_csv(Path('public_data/processed')/lookup,encoding='latin1'),hide_index=True,width='stretch')
     if RELEASE and Path('docs/supplied_data_review.md').exists():
@@ -398,4 +434,4 @@ elif page=='Methodology and Data Sources':
             st.dataframe(store.read('tract_relationships_2010_2020'),hide_index=True,width='stretch')
     st.markdown(Path('docs/methodology.md').read_text())
     st.markdown(Path('docs/public_data_status.md').read_text())
-    st.caption('Source-level privacy labels are enforced in public-data view. Public deployment additionally requires a physically separate reviewed database and authentication/hosting review. This application is not publicly deployed.')
+    st.caption('The public release uses reviewed public assets. Staff imports and assessments are kept in the separate internal workspace.')

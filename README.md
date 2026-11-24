@@ -7,17 +7,24 @@ Public, read-only Streamlit application for Philadelphia, Montgomery and Delawar
 
 ## Public release
 
+The app opens on **Find food**. Choose a county or enter a ZIP code, site name,
+or street address. Listings show directions and available source hours. Check
+with the provider before traveling. **County snapshot** shows county-level food
+insecurity and directory counts. **Research tools** holds the detailed maps,
+comparisons, and source documentation.
+
+
 ```bash
 python -m venv .venv
 .venv/bin/pip install -r requirements.txt
 .venv/bin/streamlit run public_app.py
 ```
 
-Use **public_app.py** as the Streamlit Community Cloud entrypoint. It forces the read-only public asset backend. `internal_app.py` exposes the separate internal SQLite import/assessment/scenario workflows. No visitor downloads, uploads, login, API keys or paid subscriptions are required by this application.
+Use **public_app.py** as the Streamlit Community Cloud entrypoint. It forces the read-only public asset backend. `internal_app.py` exposes the separate internal SQLite import/assessment/scenario workflows. Visitors can browse without an account, API key, or subscription. Public evidence exports are available in Research tools.
 
 Real versioned public assets include 779 TIGER census tracts, 7,790 ACS 2024 five-year observations with source MOEs, six official Feeding America county observations, 471 directory source records (445 food-resource records plus 26 separately classified benefits-assistance offices), regional USDA 2025 SRAM measures, and SEPTA bus/rail GTFS infrastructure and schedules. Source records are not deduplicated unique active organizations. Coordinates with failed geocodes or county conflicts are withheld, not invented.
 
-Ten sections provide source-attributed maps, filters, county food insecurity, tract needs, provider inventories, published operating schedules, nearby pairs, SEPTA infrastructure, area evidence comparisons and Deep/Wide/Optimization evidence exploration. No internal volumes or assessments are present. Those sections explain the missing organizational inputs. No opportunity scores, capacity estimates or optimization results are fabricated.
+Research tools provides source-attributed maps, tract indicators, provider inventories, published schedules, nearby pairs, SEPTA infrastructure, and strategy evidence comparisons. The internal workspace has ten sections, including staff-only assessments and data management. No internal volumes or assessments are present. Those sections explain the missing organizational inputs. No opportunity scores, capacity estimates or optimization results are fabricated.
 
 See [source status](docs/public_data_status.md), [methodology](docs/methodology.md), [deployment instructions](docs/deployment.md), and [verification record](docs/verification.md). Actual application screenshots are in [docs/screenshots](docs/screenshots). The machine-readable manifest and selected ACS table definitions are in `public_data/processed/`.
 
