@@ -6,11 +6,11 @@ Verified anonymously on November 13, 2026. Both default entrypoints now use publ
 
 Target repository: https://github.com/RNo2/Partners-Network-Project
 
-Entry point: **public_app.py**, branch **main**, Python **3.12**.
+Entry point: **public_app.py**, branch **main**, Python **3.12 or 3.14**. Existing deployments using `app.py` can keep that entrypoint, which also opens the public dashboard by default.
 
 1. Sign into https://share.streamlit.io/ using the GitHub account with access to RNo2/Partners-Network-Project.
 2. Authorize Streamlit's GitHub integration if prompted. Create app → select this repository, main, public_app.py.
-3. In Advanced settings select Python 3.12. No secrets, APIs, paid services, or credit card are needed for this app.
+3. In Advanced settings select Python 3.12 or 3.14. No secrets, APIs, paid services, or credit card are needed for this app.
 4. Deploy, set app sharing to public, then open the resulting `*.streamlit.app` URL in a private/incognito browser to confirm no login is required.
 5. In an anonymous browser, check Find food with a known ZIP and a ZIP with no
    results. Open a directions link and confirm it uses the listing address.
